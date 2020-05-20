@@ -1,0 +1,19 @@
+version: '2'
+services:
+  db:
+    image: elasticsearch
+    volumes: 
+      - './docker-data/elasticsearch:/usr/share/elasticsearch/data'
+  api:
+    build: .
+    depends_on: 
+      - db
+    command: npm run dev
+    environment: 
+      - NODE_ENV=development
+    env_file: .env.development
+    ports:
+      - '3000:3000'
+    volumes: 
+      - '.:/src/app/api'
+      - '/src/app/api/node_modules'

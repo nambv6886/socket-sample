@@ -1,0 +1,10 @@
+variables:
+  IMAGE_NAME: api       
+stages:
+    - test
+build:
+  stage: test
+  script:
+    - docker build -t $IMAGE_NAME .
+    - docker run -d --name elasticsearch --network parkcity 127.0.0.1:8082/elasticsearch:latest
+    - docker run --link elasticsearch:elasticsearch --network parkcity --env-file .env.development $IMAGE_NAME npm test
